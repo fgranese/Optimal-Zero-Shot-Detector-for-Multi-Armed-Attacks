@@ -1,0 +1,48 @@
+DATA_NATURAL:
+  data_name: cifar10
+
+TRAIN:
+  switch: False
+  PGDi:
+    epsilon: 0.125 # 0.125 for CIFAR10 and 0.25 for SVHN
+    perturb_steps: 5
+
+TEST:
+  detectors:
+    - CE
+    - KL
+    - Rao
+    - g
+    - nss
+  thrs_size: 200
+  ATTACK:
+    data_dir: adv_data/ # contains the adversarial data
+    epsilon_test: 0.01 # check Tab.1
+    norm: '2' # 1, 2, 'inf', 'none'
+  RESULTS:
+    res_dir: results/mixture/ # contains the results of the evaluation
+    nss_dir: results/nss/
+    fs_dir: results/fs/
+  OPTIMIZATION:
+    type: 'blahut-arimoto'
+    max_itaraions: 5000
+
+DETECTOR:
+  DETECTOR_MODEL: # To change the structure of the detector
+    layers: 3
+    nodes: 256
+    save_freq: 1
+  batch_size: 500
+  epochs_detector: 100
+  resume_train_detector: False
+  resume_epoch: 100 # checkpoint to load at testing time or epoch to resume training
+  lr: 0.01
+  weight_decay: 0.0005
+  momentum: 0.
+  seed: 1
+  classifier_dir: checkpoints/classifiers/ # directory containing the classifier model
+  detector_dir: checkpoints/detectors/ # directory containing the detector model
+  nesterov: False
+  device: 0
+
+
